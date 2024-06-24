@@ -1,0 +1,11 @@
+{
+    "manifest_version": 3,
+    "name": "Just Do",
+    "description": "A minimal note-taking extension",
+    "version": "0.0.1",
+    "action": {
+        "default_title": "Just Do",
+        "default_popup": "popup/popup.html"
+    },
+    "permissions": []
+}

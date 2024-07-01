@@ -11,7 +11,8 @@ To install it on Firefox, follow these steps:
 3. In the popup dialog, navigate to the directory of this file and open ```manifest.json```
 4. You should see the extension loaded as a temporary file:
 ![temp ext](imgs/ff-tempext.png)
-1. After making any changes to the file, click on ```reload``` button
+   > The following error may appear, this is expected and is due to the cross-compatibility with chrome. ![firefox error](imgs/ff-error.png)
+5. After making any changes to the file, click on ```reload``` button
 
 ## Google Chrome
 To install it on Chrome, follow these steps:
@@ -22,6 +23,7 @@ To install it on Chrome, follow these steps:
 4. In the popup dialog, navigate to the directory of this file and click ```Select Folder```
 5. You should see the extension loaded:
 ![extensions](imgs/ch-extensions.png)
+   > The following error may appear, this is expected and is due to the cross-compatibility with firefox. ![chrome error](imgs/ch-error.png)
 6. After making any changes to the file, click the ![reload](imgs/icon_refresh.svg) button
 
 # Making changes

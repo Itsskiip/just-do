@@ -47,6 +47,7 @@ function formatTask(task){
     checkbox.name = "cb"
     checkbox.classList.add("w3-check","w3-display-right","w3-margin-right","w3-btn")
     checkbox.type = "checkbox"
+    checkbox.addEventListener("click", (e) => browser.runtime.sendMessage({"id":checkbox.id, "state":checkbox.checked}))
     taskCard.appendChild(checkbox)
 
     const label = document.createElement("label")
@@ -86,13 +87,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     initialise_list()
 })
 
-document.addEventListener("blur", (e) => {
-    for (element of document.getElementsByName("cb")){
-        if (element.checked){
-            browser.storage.local.remove(element.id.split('-', 2)[1])
-        }
-    }
-})
+browser.runtime.connect({ name: "popup" });
 
 addButton.addEventListener("click", async (e) => {
     switch (popupState) {

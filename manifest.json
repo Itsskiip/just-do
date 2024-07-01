@@ -7,5 +7,10 @@
         "default_title": "Just Do",
         "default_popup": "popup/popup.html"
     },
+    "background": {
+        "scripts": ["background.js"],
+        "service_worker": "background.js",
+        "type": "module"
+    },
     "permissions": ["storage"]
 }

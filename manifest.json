@@ -7,5 +7,5 @@
         "default_title": "Just Do",
         "default_popup": "popup/popup.html"
     },
-    "permissions": []
+    "permissions": ["storage"]
 }

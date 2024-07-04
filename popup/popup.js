@@ -8,6 +8,11 @@ const addForm = document.getElementById("add-form")
 const newTaskName = document.getElementById("new-task-name")
 const newTaskDate = document.getElementById("new-task-date")
 
+
+
+
+
+
 const state = Object.freeze({
     TaskList: 0,
     AddPage: 1

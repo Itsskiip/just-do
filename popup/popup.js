@@ -6,6 +6,7 @@ const taskList = document.getElementById("task-list")
 const addForm = document.getElementById("add-form")
 
 const newTaskName = document.getElementById("new-task-name")
+const newDescription = document.getElementById("new-description")
 const newTaskDate = document.getElementById("new-task-date")
 
 const state = Object.freeze({
@@ -15,10 +16,11 @@ const state = Object.freeze({
 let popupState = state.TaskList
 
 class Task {
-    constructor(id, name, dueDate) {
+    constructor(id, name, dueDate,description) {
         this.name = name
         this.dueDate = dueDate
         this.id = id
+        this.description = description || ""
     }
 }
 
@@ -51,7 +53,10 @@ function formatTask(task){
     taskCard.appendChild(checkbox)
 
     const label = document.createElement("label")
-    label.innerHTML = "<span>".concat(task.name, "</span> <span class=\"w3-opacity\"> - ", task.dueDate, "</span>")
+    label.innerHTML = "<span style=\"display: inline-block;width:150px;text-overflow: ellipsis;overflow: hidden\">".concat(task.name, "</span> <span class=\"w3-opacity\"> - ", task.dueDate,  "</span><br><span style=\"display: inline-block;width:250px;color:grey;font-size:small;text-overflow: ellipsis;overflow: hidden\">",task.description, "</span>")
+   
+
+
     taskCard.appendChild(label)
 
     return taskCard
@@ -95,10 +100,11 @@ addButton.addEventListener("click", async (e) => {
             initialise_add_page()
             break
         case state.AddPage:
-            const task = new Task(await getLastId(), newTaskName.value, newTaskDate.value)
+            const task = new Task(await getLastId(), newTaskName.value,newTaskDate.value,newDescription.value)
             saveTask(task)
             newTaskName.value = ''
             newTaskDate.value = ''
+            newDescription.value=''
             initialise_list()
             break
     }

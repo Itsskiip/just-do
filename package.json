@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "browser-polyfill": "^3.20.2",
     "openai": "^4.52.3"
   },
   "type": "module"

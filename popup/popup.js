@@ -11,6 +11,8 @@ const newTaskName = document.getElementById("new-task-name")
 const newTaskDescription = document.getElementById("new-task-description")
 const newTaskDate = document.getElementById("new-task-date")
 
+const addTagButton = document.getElementById("add-tag-btn")
+
 browser.runtime.connect({ name: "popup" });
 
 const state = Object.freeze({
@@ -74,12 +76,16 @@ function initialise_add_page(){
     taskList.classList.replace("w3-show", "w3-hide")
 }
 
-
+addTagButton.addEventListener("click", addTag)
 function addTag() {
-    var inputtag = document.getElementById("add-new-tag")
-    inputtag.value=''
-    console.log("Add Tag button clicked!"); // itzzzz not workkkingskahkdhakdak
+    var inputtag = document.getElementById("add-tag-tb")
 
+    if (inputtag.value === ""){
+        alert("It is empty");
+        return;
+    }
+    
+    inputtag.value=''
 
 }
 

@@ -42,8 +42,13 @@ function formatTask(task){
     taskCard.appendChild(checkbox)
 
     const label = document.createElement("label")
-    label.innerHTML = "<span>".concat(task.name, "</span> <span class=\"w3-opacity\"> - ", task.dueDate, "</span>")
+    label.innerHTML = 
+        "<span>" + task.name + 
+        "</span> <span class=\"w3-opacity\">" + 
+        (task.dueDate === "" ? "&nbsp" :  " - " + task.dueDate) +
+        "</span>"
     taskCard.appendChild(label)
+    console.log(task.name)
 
     return taskCard
 }
@@ -54,11 +59,23 @@ function initialise_list(){
     addButton.innerHTML = "+"
     taskList.classList.replace("w3-hide", "w3-show")
     addForm.classList.replace("w3-show", "w3-hide")
+    
+    addButton.disabled = false
 
     taskList.innerHTML = ''
 
     getItems("tasks", (results) => {
         const keys = Object.keys(results)
+        keys.sort((k1, k2) => {
+            console.log(results[k1])
+            let d1 = new Date(results[k1].dueDate)
+            let d2 = new Date(results[k2].dueDate)
+
+            if (isNaN(d1)) d1 = new Date()
+            if (isNaN(d2)) d2 = new Date()
+
+            return d1.getTime() - d2.getTime()
+        })
         for (let key of keys){
             taskList.appendChild(formatTask(results[key]))
         }
@@ -70,27 +87,43 @@ function initialise_add_page(){
     headerText.innerHTML = "Add Page"
     addButton.innerHTML = "Submit"
 
+    addButton.disabled = true
+
+    newTaskName.value = ''
+    newTaskDate.value = ''
+    newTaskDescription.value = ''
+
     addForm.classList.replace("w3-hide", "w3-show")
     taskList.classList.replace("w3-show", "w3-hide")
+    
+    newTaskName.focus()
 }
 
 document.addEventListener("DOMContentLoaded", (e) => {
     initialise_list()
 })
 
+newTaskName.addEventListener("input", (e) => {
+    addButton.disabled = newTaskName.value === ""
+})
 
-addButton.addEventListener("click", async (e) => {
+async function addClicked(){
     switch (popupState) {
         case state.TaskList:
             initialise_add_page()
             break
         case state.AddPage:
-            const task = new Task(await getLastId("tasks"), newTaskName.value, newTaskDescription.value, newTaskDate.value)
+            const task = new Task(
+                await getLastId("tasks"),
+                newTaskName.value,
+                newTaskDescription.value,
+                newTaskDate.value)
             await saveItem("tasks", task.id, task)
-            newTaskName.value = ''
-            newTaskDate.value = ''
-            newTaskDescription.value = ''
             initialise_list()
             break
     }
-})
+}
+
+//Note: Should probably listen for the submit event instead but I couldn't get it to work
+document.addEventListener("keypress", (e) => {if (e.key === 'Enter' && !addButton.disabled) addClicked()}) 
+addButton.addEventListener("click", addClicked)

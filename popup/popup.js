@@ -74,6 +74,16 @@ function initialise_add_page(){
     taskList.classList.replace("w3-show", "w3-hide")
 }
 
+
+function addTag() {
+    var inputtag = document.getElementById("add-new-tag")
+    inputtag.value=''
+    console.log("Add Tag button clicked!"); // itzzzz not workkkingskahkdhakdak
+
+
+}
+
+
 document.addEventListener("DOMContentLoaded", (e) => {
     initialise_list()
 })

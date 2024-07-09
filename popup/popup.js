@@ -13,6 +13,7 @@ const newTaskDate = document.getElementById("new-task-date")
 
 const addTagButton = document.getElementById("add-tag-btn")
 const resetTagButton = document.getElementById('reset-tags')
+const tagSelection = document.getElementById('tagSelect')
 
 browser.runtime.connect({ name: "popup" });
 
@@ -55,6 +56,7 @@ function formatTask(task){
 //------------------------------
 addTagButton.addEventListener("click", addTag)
 resetTagButton.addEventListener("click",resettags)
+tagSelection.addEventListener('change',selectedTags)
 
 function formatTagOption(){         //create the options for list
     var select = document.getElementById('tagSelect')
@@ -107,6 +109,39 @@ function addTag() {             //append new tag
         formatTagOption()
     })  
 }
+
+
+//accounting for Selected options
+function selectedTags(){
+    var selected = document.getElementById('selectedtags')
+    selected.innerHTML="<label>Selected Tags:</label>"
+    var tagSelection = document.getElementById('tagSelect');
+
+    var selectedValues = [];        //creates list with selected tags
+    for (var i = 0; i < tagSelection.options.length; i++) {
+        var option = tagSelection.options[i];
+        if (option.selected) {
+            selectedValues.push(option.value);
+
+            var showtag = document.createElement('span')
+            showtag.className = "w3-tag"
+            showtag.textContent = option.value
+            selected.appendChild(showtag)
+        }
+    }
+    
+    // Log all selected values
+    console.log(selectedValues);
+
+
+
+
+}
+
+
+
+
+
 //------------------------
 
 
@@ -152,7 +187,8 @@ addButton.addEventListener("click", async (e) => {
     switch (popupState) {
         case state.TaskList:
             initialise_add_page()
-            formatTagOption()           
+            formatTagOption()  
+            selectedTags()         
             break
         case state.AddPage:
             const task = new Task(await getLastId("tasks"), newTaskName.value, newTaskDescription.value, newTaskDate.value)

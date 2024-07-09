@@ -29,21 +29,24 @@
             <div class="w3-margin-bottom">
                 <label>Tags</label>
                 
-                <div class="w3-container w3-cell">
-                    <input class="w3-input w3-round w3-theme-d3 w3-border-0" type="text" placeholder="New Tags" id="add-tag-tb">
+                <div class="w3-container w3-cell " style="width: 80%; padding: 5px;">
+                    <input class="w3-input w3-round w3-theme-d3 w3-border-0 " type="text" placeholder="New Tags" id="add-tag-tb">
                 </div>
                   
-                <div class="w3-container w3-cell">
-                    <button id="add-tag-btn" type="button" class="w3-btn w3-round w3-theme-d3 w3-border-0">Add Tag</button>
+                <div class="w3-container w3-cell" style="width: 15%;padding: 5px;">
+                    <button id="add-tag-btn" type="button" class="w3-btn w3-round w3-theme-d3 w3-border-0 ">Add Tag</button>
+                </div>
+                <div class="w3-container w3-cell" style="width: 5%;padding: 5px;">
+                    <button id="reset-tags" type="button" class="w3-btn w3-round w3-theme-d3 w3-border-0 ">X</button>
                 </div>
 
                 <div class="w3-container">
-                    <select name="option" class="w3-input w3-round w3-theme-d3 w3-border-0" id="tagSelect" multiple>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
+                    <select class="w3-input w3-round w3-theme-d3 w3-border-0" id="tagSelect" multiple>
+                        
                     </select>
                 </div>
+
+                
 
                 <div class="w3-container">
                     <label>Selected Tags:</label>

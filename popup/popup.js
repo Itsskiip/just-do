@@ -12,6 +12,7 @@ const newTaskDescription = document.getElementById("new-task-description")
 const newTaskDate = document.getElementById("new-task-date")
 
 const addTagButton = document.getElementById("add-tag-btn")
+const resetTagButton = document.getElementById('reset-tags')
 
 browser.runtime.connect({ name: "popup" });
 
@@ -50,6 +51,66 @@ function formatTask(task){
     return taskCard
 }
 
+
+//------------------------------
+addTagButton.addEventListener("click", addTag)
+resetTagButton.addEventListener("click",resettags)
+
+function formatTagOption(){         //create the options for list
+    var select = document.getElementById('tagSelect')
+    select.innerHTML=''
+    
+    getItems("Tags", (results) => {
+        var tag_list=Object.keys(results)
+
+        tag_list.forEach(tag => {
+            var tagOption = document.createElement('option');
+            tagOption.value = tag;
+            tagOption.textContent = tag;
+            select.appendChild(tagOption);
+        });
+    })
+}
+
+function resettags() {  //Remove all tags in selection
+    let confirmationwindow=confirm("Delete ALL tags?")
+    if (confirmationwindow){
+        getItems("Tags", (obj) => {
+        
+            Object.keys(obj).forEach(id => {
+                delete obj[id];
+            });
+    
+            
+            browser.storage.local.set({ ["Tags"]: obj })
+            .then(() => {
+                formatTagOption()
+            })  
+        })
+    }
+    
+    
+
+}
+
+function addTag() {             //append new tag
+    var inputtag = document.getElementById("add-tag-tb")
+    
+
+    if (inputtag.value.trim() === ""){  //no need to account for duplicates
+        alert("It is empty");
+        return;
+    }
+    saveItem("Tags", inputtag.value.trim(), inputtag.value.trim())
+    .then(() => {
+        inputtag.value=''
+        formatTagOption()
+    })  
+}
+//------------------------
+
+
+
 function initialise_list(){
     popupState = state.TaskList
     headerText.innerHTML = "Just Do"
@@ -67,6 +128,10 @@ function initialise_list(){
     })
 }
 
+
+
+
+
 function initialise_add_page(){
     popupState = state.AddPage
     headerText.innerHTML = "Add Page"
@@ -76,22 +141,10 @@ function initialise_add_page(){
     taskList.classList.replace("w3-show", "w3-hide")
 }
 
-addTagButton.addEventListener("click", addTag)
-function addTag() {
-    var inputtag = document.getElementById("add-tag-tb")
-
-    if (inputtag.value === ""){
-        alert("It is empty");
-        return;
-    }
-    
-    inputtag.value=''
-
-}
-
 
 document.addEventListener("DOMContentLoaded", (e) => {
     initialise_list()
+       
 })
 
 
@@ -99,6 +152,7 @@ addButton.addEventListener("click", async (e) => {
     switch (popupState) {
         case state.TaskList:
             initialise_add_page()
+            formatTagOption()           
             break
         case state.AddPage:
             const task = new Task(await getLastId("tasks"), newTaskName.value, newTaskDescription.value, newTaskDate.value)
@@ -106,7 +160,7 @@ addButton.addEventListener("click", async (e) => {
             newTaskName.value = ''
             newTaskDate.value = ''
             newTaskDescription.value = ''
-            initialise_list()
+            initialise_list()            
             break
     }
 })

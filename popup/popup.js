@@ -1,3 +1,5 @@
+import {saveItem, getItems, getLastId} from "../scripts/storage.js"
+
 const headerText = document.getElementById("header-text")
 const addButton = document.getElementById("add-button")
 
@@ -6,7 +8,10 @@ const taskList = document.getElementById("task-list")
 const addForm = document.getElementById("add-form")
 
 const newTaskName = document.getElementById("new-task-name")
+const newTaskDescription = document.getElementById("new-task-description")
 const newTaskDate = document.getElementById("new-task-date")
+
+browser.runtime.connect({ name: "popup" });
 
 const state = Object.freeze({
     TaskList: 0,
@@ -15,26 +20,12 @@ const state = Object.freeze({
 let popupState = state.TaskList
 
 class Task {
-    constructor(id, name, dueDate) {
+    constructor(id, name, description, dueDate) {
         this.name = name
+        this.description = description
         this.dueDate = dueDate
         this.id = id
     }
-}
-
-function getLastId(){
-    return browser.storage.local.get(null).then((results) => {
-        const keys = Object.keys(results)
-        if (keys.length === 0) {
-            return 0
-        } else {
-            return results[keys[keys.length - 1]].id + 1
-        }
-    })
-}
-
-function saveTask(task){
-    browser.storage.local.set({[task.id]: task})
 }
 
 function formatTask(task){
@@ -66,7 +57,7 @@ function initialise_list(){
 
     taskList.innerHTML = ''
 
-    browser.storage.local.get(null).then((results) => {
+    getItems("tasks", (results) => {
         const keys = Object.keys(results)
         for (let key of keys){
             taskList.appendChild(formatTask(results[key]))
@@ -87,7 +78,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
     initialise_list()
 })
 
-browser.runtime.connect({ name: "popup" });
 
 addButton.addEventListener("click", async (e) => {
     switch (popupState) {
@@ -95,10 +85,11 @@ addButton.addEventListener("click", async (e) => {
             initialise_add_page()
             break
         case state.AddPage:
-            const task = new Task(await getLastId(), newTaskName.value, newTaskDate.value)
-            saveTask(task)
+            const task = new Task(await getLastId("tasks"), newTaskName.value, newTaskDescription.value, newTaskDate.value)
+            await saveItem("tasks", task.id, task)
             newTaskName.value = ''
             newTaskDate.value = ''
+            newTaskDescription.value = ''
             initialise_list()
             break
     }

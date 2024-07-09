@@ -1,4 +1,5 @@
-import "./browser-polyfill.js"
+import "../node_modules/webextension-polyfill/dist/browser-polyfill.min.js"
+import {removeItem} from "./scripts/storage.js"
 
 let data = {}
 
@@ -7,13 +8,13 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log(data)
 })
 
-browser.runtime.onConnect.addListener(function(port) {
+browser.runtime.onConnect.addListener((port) => {
     if (port.name === "popup") {
         
-        port.onDisconnect.addListener(function() {
+        port.onDisconnect.addListener(async () => {
             for (let key of Object.keys(data)){
                 if (data[key]){
-                    browser.storage.local.remove(key.split('-',2)[1])
+                    await removeItem("tasks", key.split('-',2)[1])
                 }
             }
             data = {}

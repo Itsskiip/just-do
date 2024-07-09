@@ -10,10 +10,17 @@ const addForm = document.getElementById("add-form")
 const newTaskName = document.getElementById("new-task-name")
 const newTaskDescription = document.getElementById("new-task-description")
 const newTaskDate = document.getElementById("new-task-date")
+const newTags=document.getElementById("selectedtags")
+
+
 
 const addTagButton = document.getElementById("add-tag-btn")
 const resetTagButton = document.getElementById('reset-tags')
 const tagSelection = document.getElementById('tagSelect')
+
+
+
+
 
 browser.runtime.connect({ name: "popup" });
 
@@ -29,6 +36,8 @@ class Task {
         this.description = description
         this.dueDate = dueDate
         this.id = id
+        
+
     }
 }
 
@@ -62,8 +71,8 @@ resetTagButton.addEventListener("click",resettags)
 tagSelection.addEventListener('change',selectedTags)
 
 function formatTagOption(){         //create the options for list
-    var select = document.getElementById('tagSelect')
-    select.innerHTML=''
+    
+    tagSelection.innerHTML=''
     
     getItems("Tags", (results) => {
         var tag_list=Object.keys(results)
@@ -72,7 +81,7 @@ function formatTagOption(){         //create the options for list
             var tagOption = document.createElement('option');
             tagOption.value = tag;
             tagOption.textContent = tag;
-            select.appendChild(tagOption);
+            tagSelection.appendChild(tagOption);
         });
     })
 }
@@ -90,16 +99,17 @@ function resettags() {  //Remove all tags in selection
             browser.storage.local.set({ ["Tags"]: obj })
             .then(() => {
                 formatTagOption()
+                selectedTags()
             })  
         })
     }
-    
     
 
 }
 
 function addTag() {             //append new tag
     var inputtag = document.getElementById("add-tag-tb")
+    
     
 
     if (inputtag.value.trim() === ""){  //no need to account for duplicates
@@ -117,9 +127,7 @@ function addTag() {             //append new tag
 //accounting for Selected options
 function selectedTags(){
     var selected = document.getElementById('selectedtags')
-    selected.innerHTML="<label>Selected Tags:</label>"
-    var tagSelection = document.getElementById('tagSelect');
-
+    selected.innerHTML=""
     var selectedValues = [];        //creates list with selected tags
     for (var i = 0; i < tagSelection.options.length; i++) {
         var option = tagSelection.options[i];
@@ -130,15 +138,10 @@ function selectedTags(){
             showtag.className = "w3-tag"
             showtag.textContent = option.value
             selected.appendChild(showtag)
+
+          
         }
     }
-    
-    // Log all selected values
-    console.log(selectedValues);
-
-
-
-
 }
 
 
@@ -199,6 +202,8 @@ addButton.addEventListener("click", async (e) => {
             newTaskName.value = ''
             newTaskDate.value = ''
             newTaskDescription.value = ''
+            
+
             initialise_list()            
             break
     }

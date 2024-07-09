@@ -29,3 +29,13 @@ var contextMenuItem = {
 };
 
 browser.contextMenus.create(contextMenuItem);
+
+browser.contextMenus.onClicked.addListener(async function(clickData) {
+    if (clickData.menuItemID === "selectedText" && clickData.selectionText) {
+        const lastId = await getLastId();
+        const task = new Task(lastId, clickData.selectionText, "");
+        saveTask(task); 
+
+    browser.action.openPopup()
+    }
+});

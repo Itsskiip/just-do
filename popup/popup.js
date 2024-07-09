@@ -46,7 +46,10 @@ function formatTask(task){
     taskCard.appendChild(checkbox)
 
     const label = document.createElement("label")
-    label.innerHTML = "<span>".concat(task.name, "</span> <span class=\"w3-opacity\"> - ", task.dueDate, "</span>")
+    label.innerHTML = "<span style=\"display: inline-block;width:150px;text-overflow: ellipsis;overflow: hidden\">".concat(task.name, "</span> <span class=\"w3-opacity\"> - ", task.dueDate,"</span><br>")
+    label.innerHTML+=("<span style=\"display: inline-block;width:250px;color:grey;font-size:small;text-overflow: ellipsis;overflow: hidden\"> " + task.description +"</span>")
+
+
     taskCard.appendChild(label)
 
     return taskCard

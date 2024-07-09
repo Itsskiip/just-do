@@ -10,13 +10,14 @@ const addForm = document.getElementById("add-form")
 const newTaskName = document.getElementById("new-task-name")
 const newTaskDescription = document.getElementById("new-task-description")
 const newTaskDate = document.getElementById("new-task-date")
-const newTags=document.getElementById("selectedtags")
+const newTags=document.getElementById("taglist")
 
 
 
 const addTagButton = document.getElementById("add-tag-btn")
 const resetTagButton = document.getElementById('reset-tags')
 const tagSelection = document.getElementById('tagSelect')
+
 
 
 
@@ -31,11 +32,12 @@ const state = Object.freeze({
 let popupState = state.TaskList
 
 class Task {
-    constructor(id, name, description, dueDate) {
+    constructor(id, name, description, dueDate,tags) {
         this.name = name
         this.description = description
         this.dueDate = dueDate
         this.id = id
+        this.tags=tags
         
 
     }
@@ -56,7 +58,8 @@ function formatTask(task){
 
     const label = document.createElement("label")
     label.innerHTML = "<span style=\"display: inline-block;width:150px;text-overflow: ellipsis;overflow: hidden\">".concat(task.name, "</span> <span class=\"w3-opacity\"> - ", task.dueDate,"</span><br>")
-    label.innerHTML+=("<span style=\"display: inline-block;width:250px;color:grey;font-size:small;text-overflow: ellipsis;overflow: hidden\"> " + task.description +"</span>")
+    label.innerHTML+=("<span style=\"display: inline-block;width:250px;color:grey;font-size:small;text-overflow: ellipsis;overflow: hidden\"> " + task.description +"</span><br>")
+    label.innerHTML+=formatTaskTag(task.tags)
 
 
     taskCard.appendChild(label)
@@ -127,6 +130,7 @@ function addTag() {             //append new tag
 //accounting for Selected options
 function selectedTags(){
     var selected = document.getElementById('selectedtags')
+    
     selected.innerHTML=""
     var selectedValues = [];        //creates list with selected tags
     for (var i = 0; i < tagSelection.options.length; i++) {
@@ -135,17 +139,31 @@ function selectedTags(){
             selectedValues.push(option.value);
 
             var showtag = document.createElement('span')
-            showtag.className = "w3-tag"
+            showtag.className = "w3-tag w3-light-gray w3-margin-right w3-margin-bottom"
             showtag.textContent = option.value
             selected.appendChild(showtag)
 
           
         }
     }
+    var taglist=document.getElementById("taglist")
+    taglist.textContent=selectedValues
+
 }
 
 
+function formatTaskTag(taglist){
+    let list = taglist.split(',')
+    let htmlstring=''
+    
+    for (let item of list){
+        let format='<span class= "w3-tag w3-light-gray w3-margin-right w3-margin-bottom">'+ item.trim() +'</span>'
+        htmlstring+=format
 
+    }
+
+    return htmlstring
+}
 
 
 //------------------------
@@ -197,11 +215,12 @@ addButton.addEventListener("click", async (e) => {
             selectedTags()         
             break
         case state.AddPage:
-            const task = new Task(await getLastId("tasks"), newTaskName.value, newTaskDescription.value, newTaskDate.value)
+            const task = new Task(await getLastId("tasks"), newTaskName.value, newTaskDescription.value, newTaskDate.value, newTags.textContent)
             await saveItem("tasks", task.id, task)
             newTaskName.value = ''
             newTaskDate.value = ''
             newTaskDescription.value = ''
+            newTags.textContent=''
             
 
             initialise_list()            

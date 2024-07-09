@@ -10,7 +10,12 @@
     "background": {
         "scripts": ["background.js"],
         "service_worker": "background.js",
-        "type": "module"
+        "type": "module",
+        "persistent": false
     },
-    "permissions": ["storage"]
+
+    "permissions": [
+        "storage",
+        "contextMenus"
+    ]
 }

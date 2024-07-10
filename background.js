@@ -1,5 +1,6 @@
 import "../node_modules/webextension-polyfill/dist/browser-polyfill.min.js"
 import {removeItem} from "./scripts/storage.js"
+import {extractTaskDetails} from "./scripts/assistant.js"
 
 let data = {}
 
@@ -36,5 +37,11 @@ browser.contextMenus.onClicked.addListener(async function(clickData) {
         // saveTask(task); 
         browser.action.openPopup()
         console.log(clickData.selectionText)
+        try {
+        const task_json = await extractTaskDetails(clickData.selectionText)
+        console.log(task_json)
+        } catch(error){
+            console.error('Error:', error)
+        }
     }
 });

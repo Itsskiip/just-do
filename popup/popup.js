@@ -12,16 +12,9 @@ const newTaskDescription = document.getElementById("new-task-description")
 const newTaskDate = document.getElementById("new-task-date")
 const newTags=document.getElementById("taglist")
 
-
-
 const addTagButton = document.getElementById("add-tag-btn")
 const resetTagButton = document.getElementById('reset-tags')
 const tagSelection = document.getElementById('tagSelect')
-
-
-
-
-
 
 browser.runtime.connect({ name: "popup" });
 
@@ -33,14 +26,12 @@ const state = Object.freeze({
 let popupState = state.TaskList
 let current_task
 class Task {
-    constructor(id, name, description, dueDate,tags) {
+    constructor(id, name, description, dueDate, tags) {
         this.name = name
         this.description = description
         this.dueDate = dueDate
         this.id = id
         this.tags=tags
-        
-
     }
 }
 
@@ -58,14 +49,17 @@ function formatTask(task){
     taskCard.appendChild(checkbox)
     const label = document.createElement("label")
 
-  label.innerHTML = 
-      "<span style=\"display: inline-block;width:150px;text-overflow: ellipsis;overflow: hidden\">" + task.name +
-      "</span> <span class=\"w3-opacity\"> - " + (task.dueDate === "" ? "&nbsp" :  " - " + task.dueDate) +
-      "</span><br>" + 
-      "<span style=\"display: inline-block;width:250px;color:grey;font-size:small;text-overflow: ellipsis;overflow: hidden\"> " + 
-      task.description + "</span><br>" +
-      formatTaskTag(task.tags)
-      
+    label.innerHTML = 
+      "<span style=\"display:inline-block; width:150; text-overflow: ellipsis;overflow: hidden\">" + task.name + "</span>"
+    if (task.dueDate !== "") {
+        label.innerHTML += "</span> <span class=\"w3-opacity\"> - " + task.dueDate + "</span>"
+    }
+    if (task.description !== ""){
+        label.innerHTML += "<br><span style=\"width:250px;color:grey;font-size:small;text-overflow: ellipsis;overflow: hidden\"> " + task.description + "</span>"
+    }
+    if (task.tags !== ""){
+        label.innerHTML += "<br>" + formatTaskTag(task.tags)
+    }
     
     label.classList.add("w3-btn")
     label.name = 'label'
@@ -120,8 +114,6 @@ function resettags() {  //Remove all tags in selection
 
 function addTag() {             //append new tag
     var inputtag = document.getElementById("add-tag-tb")
-    
-    
 
     if (inputtag.value.trim() === ""){  //no need to account for duplicates
         alert("It is empty");
@@ -150,18 +142,14 @@ function selectedTags(){
             showtag.className = "w3-tag w3-light-gray w3-margin-right w3-margin-bottom"
             showtag.textContent = option.value
             selected.appendChild(showtag)
-
-          
         }
     }
-    var taglist=document.getElementById("taglist")
-    taglist.textContent=selectedValues
-
+    newTags.textContent=selectedValues
 }
 
 
-function formatTaskTag(taglist){
-    let list = taglist.split(',')
+function formatTaskTag(tagListStr){
+    let list = tagListStr.split(',')
     let htmlstring=''
     
     for (let item of list){
@@ -220,6 +208,7 @@ function initialise_add_page(){
     newTaskName.value = ''
     newTaskDate.value = ''
     newTaskDescription.value = ''
+    newTags.textContent = ''
 
     addForm.classList.replace("w3-hide", "w3-show")
     taskList.classList.replace("w3-show", "w3-hide")
@@ -235,6 +224,7 @@ function initialise_edit_page(task){
     newTaskName.value = task.name
     newTaskDate.value = task.dueDate
     newTaskDescription.value = task.description
+    newTags.textContent = task.tags
 
     current_task = task.id
 
@@ -268,11 +258,15 @@ async function addClicked(){
             id = current_task
             break
     }
+    
     const task = new Task(
         id,
         newTaskName.value,
         newTaskDescription.value,
-        newTaskDate.value)
+        newTaskDate.value,
+        newTags.textContent)
+
+    console.log(task)
     await saveItem("tasks", id, task)
     initialise_list()
 }

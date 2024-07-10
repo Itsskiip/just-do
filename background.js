@@ -21,3 +21,12 @@ browser.runtime.onConnect.addListener((port) => {
         });
     }
 });
+
+//create context menu
+var contextMenuItem = {
+    "id": "selectedText",
+    "title": "Auto Fill \"%s\"",
+    "contexts": ["selection"]
+};
+
+browser.contextMenus.create(contextMenuItem);

@@ -15,10 +15,11 @@ browser.runtime.connect({ name: "popup" });
 
 const state = Object.freeze({
     TaskList: 0,
-    AddPage: 1
+    AddPage: 1,
+    EditPage: 2
 })
 let popupState = state.TaskList
-
+let current_task
 class Task {
     constructor(id, name, description, dueDate) {
         this.name = name
@@ -40,16 +41,18 @@ function formatTask(task){
     checkbox.type = "checkbox"
     checkbox.addEventListener("click", (e) => browser.runtime.sendMessage({"id":checkbox.id, "state":checkbox.checked}))
     taskCard.appendChild(checkbox)
-
     const label = document.createElement("label")
     label.innerHTML = 
         "<span>" + task.name + 
         "</span> <span class=\"w3-opacity\">" + 
         (task.dueDate === "" ? "&nbsp" :  " - " + task.dueDate) +
         "</span>"
-    taskCard.appendChild(label)
-    console.log(task.name)
 
+    label.classList.add("w3-btn")
+    label.name = 'label'
+    label.addEventListener("click", () => initialise_edit_page(task))
+
+    taskCard.appendChild(label)
     return taskCard
 }
 
@@ -67,7 +70,6 @@ function initialise_list(){
     getItems("tasks", (results) => {
         const keys = Object.keys(results)
         keys.sort((k1, k2) => {
-            console.log(results[k1])
             let d1 = new Date(results[k1].dueDate)
             let d2 = new Date(results[k2].dueDate)
 
@@ -84,7 +86,7 @@ function initialise_list(){
 
 function initialise_add_page(){
     popupState = state.AddPage
-    headerText.innerHTML = "Add Page"
+    headerText.innerHTML = "Add Task"
     addButton.innerHTML = "Submit"
 
     addButton.disabled = true
@@ -99,29 +101,51 @@ function initialise_add_page(){
     newTaskName.focus()
 }
 
+function initialise_edit_page(task){
+    popupState = state.EditPage
+    headerText.innerHTML = "Edit Task"
+    addButton.innerHTML = "Save"
+
+    newTaskName.value = task.name
+    newTaskDate.value = task.dueDate
+    newTaskDescription.value = task.description
+
+    current_task = task.id
+
+    addForm.classList.replace("w3-hide", "w3-show")
+    taskList.classList.replace("w3-show", "w3-hide")
+}
+
+//When opening the popup, initialise the lise
 document.addEventListener("DOMContentLoaded", (e) => {
     initialise_list()
 })
 
+//Handles enabling/disabling the Submit button
 newTaskName.addEventListener("input", (e) => {
     addButton.disabled = newTaskName.value === ""
 })
 
 async function addClicked(){
+    let id
     switch (popupState) {
         case state.TaskList:
             initialise_add_page()
-            break
+            return
         case state.AddPage:
-            const task = new Task(
-                await getLastId("tasks"),
-                newTaskName.value,
-                newTaskDescription.value,
-                newTaskDate.value)
-            await saveItem("tasks", task.id, task)
-            initialise_list()
+            id = await getLastId("tasks")
+            break
+        case state.EditPage:
+            id = current_task
             break
     }
+    const task = new Task(
+        id,
+        newTaskName.value,
+        newTaskDescription.value,
+        newTaskDate.value)
+    await saveItem("tasks", id, task)
+    initialise_list()
 }
 
 //Note: Should probably listen for the submit event instead but I couldn't get it to work

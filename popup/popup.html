@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-grey.css">
     <script type="application/javascript" src="../node_modules/webextension-polyfill/dist/browser-polyfill.min.js"></script>
+    <script type="module" src="popup.js"></script>
 </head>
 <body class="w3-card w3-theme-d5" style="width:350px; height:500px">
     <header class="w3-display-container w3-container w3-theme w3-card">
@@ -11,7 +12,10 @@
     </header>
     
     <form class="w3-container">
+        <!--Task List-->
         <ul id="task-list" class="w3-ul w3-show"></ul>
+
+        <!--Add/Edit Tasks form-->
         <div id="add-form" class="w3-padding-16 w3-hide" none>
             <div class="w3-margin-bottom">
                 <label>Task Name</label>
@@ -34,5 +38,4 @@
             </div>
         </div>
     </form>
-    <script type="module" src="popup.js"></script>
 </body>

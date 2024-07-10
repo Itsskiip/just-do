@@ -1,6 +1,6 @@
 import "../node_modules/webextension-polyfill/dist/browser-polyfill.min.js"
 import {removeItem} from "./scripts/storage.js"
-import {extractTaskDetails} from "./scripts/assistant.js"
+import {fetchOpenAI} from "./scripts/gptassistant.js"
 
 let data = {}
 
@@ -38,7 +38,7 @@ browser.contextMenus.onClicked.addListener(async function(clickData) {
         browser.action.openPopup()
         console.log(clickData.selectionText)
         try {
-        const task_json = await extractTaskDetails(clickData.selectionText)
+        const task_json = await fetchOpenAI(clickData.selectionText)
         console.log(task_json)
         } catch(error){
             console.error('Error:', error)

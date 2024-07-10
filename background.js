@@ -23,20 +23,18 @@ browser.runtime.onConnect.addListener((port) => {
 });
 
 //create context menu
-var contextMenuItem = {
-    "id": "selectedText",
+browser.contextMenus.create({
+    "id": "Autofill",
     "title": "Auto Fill \"%s\"",
     "contexts": ["selection"]
-};
-
-browser.contextMenus.create(contextMenuItem);
+});
 
 browser.contextMenus.onClicked.addListener(async function(clickData) {
-    if (clickData.menuItemID === "selectedText" && clickData.selectionText) {
-        const lastId = await getLastId();
-        const task = new Task(lastId, clickData.selectionText, "");
-        saveTask(task); 
-
-    browser.action.openPopup()
+    if (clickData.menuItemId == "Autofill") {
+        // const lastId = await getLastId();
+        // const task = new Task(lastId, clickData.selectionText, "");
+        // saveTask(task); 
+        browser.action.openPopup()
+        console.log(clickData.selectionText)
     }
 });

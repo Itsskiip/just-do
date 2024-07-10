@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "openai": "^4.52.3",
+    "openai": "^4.52.4",
     "webextension-polyfill": "^0.12.0"
   },
   "type": "module"

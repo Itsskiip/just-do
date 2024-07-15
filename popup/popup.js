@@ -274,3 +274,9 @@ async function addClicked(){
 //Note: Should probably listen for the submit event instead but I couldn't get it to work
 document.addEventListener("keypress", (e) => {if (e.key === 'Enter' && !addButton.disabled) addClicked()}) 
 addButton.addEventListener("click", addClicked)
+
+//Listen for messages from the background script
+browser.runtime.onMessage.addListener(
+    if ()
+
+)

@@ -40,6 +40,7 @@ class Task {
 function formatTask(task){
     const taskCard = document.createElement("li")
     taskCard.classList.add("w3-display-container")
+    taskCard.style = "padding:unset"
     
     const checkbox = document.createElement("input")
     checkbox.name = task.name
@@ -52,12 +53,12 @@ function formatTask(task){
     const label = document.createElement("label")
 
     label.innerHTML = 
-      "<span style=\"display:inline-block; width:150; text-overflow: ellipsis;overflow: hidden\">" + task.name + "</span>"
+      "<span style=\"display:inline-block; width:150px; float:left; text-align:left; text-overflow: ellipsis;overflow: hidden; vertical-align:bottom\">" + task.name + "</span>"
     if (task.dueDate !== "") {
         label.innerHTML += "</span> <span class=\"w3-opacity\"> - " + task.dueDate + "</span>"
     }
     if (task.description !== ""){
-        label.innerHTML += "<br><span style=\"width:250px;color:grey;font-size:small;text-overflow: ellipsis;overflow: hidden\"> " + task.description + "</span>"
+        label.innerHTML += "<br><span style=\"display:inline-block; width:250px; color:grey;font-size:small;text-overflow: ellipsis;overflow: hidden; vertical-align:top; float:left; text-align:left\"> " + task.description + "</span>"
     }
     if (task.tags !== ""){
         label.innerHTML += "<br>" + formatTaskTag(task.tags)
@@ -141,7 +142,7 @@ function selectedTags(){
             selectedValues.push(option.value);
 
             var showtag = document.createElement('span')
-            showtag.className = "w3-tag w3-light-gray w3-margin-right w3-margin-bottom"
+            showtag.className = "w3-tag w3-light-gray w3-margin-small w3-left"
             showtag.textContent = option.value
             selected.appendChild(showtag)
         }
@@ -155,7 +156,7 @@ function formatTaskTag(tagListStr){
     let htmlstring=''
     
     for (let item of list){
-        let format='<span class= "w3-tag w3-light-gray w3-margin-right w3-margin-bottom">'+ item.trim() +'</span>'
+        let format='<span class= "w3-tag w3-light-gray w3-margin-small w3-left">'+ item.trim() +'</span>'
         htmlstring+=format
 
     }

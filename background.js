@@ -17,7 +17,7 @@ let highlighted_text = ''
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message === "get_autofill") {
         if (autofill) {
-            fetchOpenAI(highlighted_text, 'OPENAI API KEY HERE').then((resp) => {
+            fetchOpenAI(highlighted_text, 'OPENAIKEYHERE').then((resp) => {
                 sendResponse(resp)
                 autofill = false
             })

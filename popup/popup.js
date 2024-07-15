@@ -277,15 +277,29 @@ async function addClicked(){
 document.addEventListener("keypress", (e) => {if (e.key === 'Enter' && !addButton.disabled) addClicked()}) 
 addButton.addEventListener("click", addClicked)
 
-//Listen for messages from the background script
-browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.id === "AddPage") {
-        initialise_add_page();
-    }
-})
+// //Listen for messages from the background script
+// browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//     if (message.id === "AddPage") {
+//         initialise_add_page();
+//     }
+// })
 
-let response = await browser.runtime.sendMessage("get_autofill")
+browser.runtime.sendMessage("get_autofill").then((response) => {
+    if (response !== false){
+        addClicked().then(() => {
+            console.log(response)
+            if (response.task !== null){
+                newTaskName.value = response.task
+                addButton.disabled = newTaskName.value === ""
+            }
+            if (response.description !== null){
+                newTaskDescription.value = response.description
+            }
+            if (response.description !== null){
+                newTaskDate.value = response.dueDate
+            }
+        })
+        
+    }}
+)
 
-if (response !== false){
-    await addClicked()
-}

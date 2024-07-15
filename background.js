@@ -1,7 +1,6 @@
 import "../node_modules/webextension-polyfill/dist/browser-polyfill.min.js"
 import {removeItem} from "./scripts/storage.js"
-// import {initialise_add_page} from "./popup/popup.js"
-// import {fetchOpenAI} from "./scripts/gptassistant.js"
+import {fetchOpenAI} from "./scripts/gptassistant.js"
 
 browser.runtime.connect({ name: "popup" });
 const state = Object.freeze({
@@ -13,20 +12,23 @@ const state = Object.freeze({
 
 let data = {}
 let autofill = false
+let highlighted_text = ''
 
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message === "get_autofill") {
         if (autofill) {
-            sendResponse("a")
-            autofill = false
+            fetchOpenAI(highlighted_text, 'OPENAI API KEY HERE').then((resp) => {
+                sendResponse(resp)
+                autofill = false
+            })
         } else {
             sendResponse(false)
         }
     }
     else{
         data[message.id] = message.state
-        console.log(data)
     }
+    return true
 })
 
 browser.runtime.onConnect.addListener((port) => {
@@ -66,6 +68,7 @@ browser.contextMenus.onClicked.addListener(async function(clickData) {
         // saveTask(task); 
         // await browser.storage.local.set({ popupState: "AddPage" });
         autofill = true;
+        highlighted_text = clickData.selectionText
         browser.action.openPopup();
         // initialise_add_page();
         // try {

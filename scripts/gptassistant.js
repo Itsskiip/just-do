@@ -1,13 +1,4 @@
-import fetch from 'node-fetch';
-
-const apiKey = process.env.OPENAI_API_KEY;
-
-if (!apiKey) {
-  console.error('OPENAI_API_KEY environment variable is not set.');
-  process.exit(1);
-}
-
-export async function fetchOpenAI(userContent) {
+export async function fetchOpenAI(userContent, apiKey) {
   const url = 'https://api.openai.com/v1/chat/completions';
 
   const headers = {
@@ -21,7 +12,7 @@ export async function fetchOpenAI(userContent) {
     messages: [
       {
         role: "system",
-        content: "You are a to-do application assistant. The input provided to you will be in the form of text, from which you need to extract the following fields: task, description, due date. You will output these fields as a json object."
+        content: "You are a to-do application assistant. The user will input raw text copied from a webpage, from which you need to extract the following fields concisely: task (str), description (str), dueDate (yyyy-MM-dd). You will output these fields as a json object. You may leave any of the fields blank if you have insufficient information."
       },
       {
         role: "user",
@@ -44,14 +35,12 @@ export async function fetchOpenAI(userContent) {
     const data = await response.json();
     if (data.choices && data.choices.length > 0) {
       const messageContent = data.choices[0].message.content;
-      console.log(messageContent);
+      let messageJson = JSON.parse(messageContent)
+      return messageJson;
     } else {
-      console.error('No choices found in the response.');
+      return 'No choices found in the response.';
     }
   } catch (error) {
-    console.error('Error:', error);
+    return 'Error:' + error;
   }
 }
-
-
-console.log(fetchOpenAI("math homework, algebra, 28/01/29"))

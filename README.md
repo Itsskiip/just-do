@@ -2,7 +2,6 @@
 1. Create a folder to hold the project data
 2. In a terminal, run ```git clone https://github.com/Itsskiip/just-do.git```
 3. Enter the newly created directory named ```just-do```
-4. Install required libraries with ```npm install```
 
 # Testing in the browser
 ## Mozilla Firefox

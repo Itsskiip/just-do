@@ -167,7 +167,11 @@ function formatTaskTag(tagListStr){
 
 //------------------------
 
-
+headerText.addEventListener('click', () => {
+    browser.tabs.create({
+        url: "../detailed-page/mockup.png"
+    });
+})
 
 function initialise_list(){
     popupState = state.TaskList

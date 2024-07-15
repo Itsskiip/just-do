@@ -23,7 +23,9 @@ const state = Object.freeze({
     AddPage: 1,
     EditPage: 2
 })
+
 let popupState = state.TaskList
+
 let current_task
 class Task {
     constructor(id, name, description, dueDate, tags) {
@@ -281,3 +283,9 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
         initialise_add_page();
     }
 })
+
+let response = await browser.runtime.sendMessage("get_autofill")
+
+if (response !== false){
+    await addClicked()
+}

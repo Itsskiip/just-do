@@ -1,7 +1,6 @@
 import "../node_modules/webextension-polyfill/dist/browser-polyfill.min.js"
 import {removeItem} from "./scripts/storage.js"
 // import {initialise_add_page} from "./popup/popup.js"
-
 // import {fetchOpenAI} from "./scripts/gptassistant.js"
 
 browser.runtime.connect({ name: "popup" });
@@ -13,15 +12,25 @@ const state = Object.freeze({
 
 
 let data = {}
+let autofill = false
 
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    data[message.id] = message.state
-    console.log(data)
+    if (message === "get_autofill") {
+        if (autofill) {
+            sendResponse("a")
+            autofill = false
+        } else {
+            sendResponse(false)
+        }
+    }
+    else{
+        data[message.id] = message.state
+        console.log(data)
+    }
 })
 
 browser.runtime.onConnect.addListener((port) => {
     if (port.name === "popup") {
-        
         port.onDisconnect.addListener(async () => {
             for (let key of Object.keys(data)){
                 if (data[key]){
@@ -56,10 +65,8 @@ browser.contextMenus.onClicked.addListener(async function(clickData) {
         // const task = new Task(lastId, clickData.selectionText, "");
         // saveTask(task); 
         // await browser.storage.local.set({ popupState: "AddPage" });
+        autofill = true;
         browser.action.openPopup();
-        browser.runtime.sendMessage({id: "AddPage"}, function(response) {
-            console.log("successfully sent message");
-        });
         // initialise_add_page();
         // try {
         // const task_json = await fetchOpenAI(clickData.selectionText)

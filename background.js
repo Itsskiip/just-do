@@ -1,5 +1,5 @@
-import "../node_modules/webextension-polyfill/dist/browser-polyfill.min.js"
-import {removeItem} from "./scripts/storage.js"
+import "./scripts/browser-polyfill.min.js"
+import {removeItem, saveItem, getItems} from "./scripts/storage.js"
 import {fetchOpenAI} from "./scripts/gptassistant.js"
 
 browser.runtime.connect({ name: "popup" });
@@ -12,15 +12,32 @@ const state = Object.freeze({
 
 let data = {}
 let autofill = false
+let apiKey = null
 let highlighted_text = ''
 
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message === "get_autofill") {
         if (autofill) {
-            fetchOpenAI(highlighted_text, 'OPENAIKEYHERE').then((resp) => {
-                sendResponse(resp)
-                autofill = false
-            })
+            if (apiKey === null){
+                apiKey = getItems('OpenAI_Key', (result) => {
+                    if (Object.keys(result).length === 0 || result["key"] === null) {
+                        apiKey = prompt("Please enter your OpenAI API Key.") // Doesn't work, need to replace with another option
+                        saveItem("OpenAI_Key", "key", apiKey)
+                    } else {
+                        apiKey = result["key"]
+                    }
+                    fetchOpenAI(highlighted_text, apiKey).then((resp) => {
+                        sendResponse(resp)
+                        autofill = false
+                    })
+                })
+            } else {
+                fetchOpenAI(highlighted_text, apiKey).then((resp) => { //refactor to avoid duplicate code
+                    sendResponse(resp)
+                    autofill = false
+                })
+            }
+            
         } else {
             sendResponse(false)
         }

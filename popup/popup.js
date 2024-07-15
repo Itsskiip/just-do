@@ -276,7 +276,8 @@ document.addEventListener("keypress", (e) => {if (e.key === 'Enter' && !addButto
 addButton.addEventListener("click", addClicked)
 
 //Listen for messages from the background script
-browser.runtime.onMessage.addListener(
-    if ()
-
-)
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.id === "AddPage") {
+        initialise_add_page();
+    }
+})

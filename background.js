@@ -57,7 +57,9 @@ browser.contextMenus.onClicked.addListener(async function(clickData) {
         // saveTask(task); 
         // await browser.storage.local.set({ popupState: "AddPage" });
         browser.action.openPopup();
-        browser.runtime.sendMessage({id: "AddPage", });
+        browser.runtime.sendMessage({id: "AddPage"}, function(response) {
+            console.log("successfully sent message");
+        });
         // initialise_add_page();
         // try {
         // const task_json = await fetchOpenAI(clickData.selectionText)

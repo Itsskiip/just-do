@@ -23,7 +23,9 @@ const state = Object.freeze({
     AddPage: 1,
     EditPage: 2
 })
+
 let popupState = state.TaskList
+
 let current_task
 class Task {
     constructor(id, name, description, dueDate, tags) {
@@ -274,3 +276,30 @@ async function addClicked(){
 //Note: Should probably listen for the submit event instead but I couldn't get it to work
 document.addEventListener("keypress", (e) => {if (e.key === 'Enter' && !addButton.disabled) addClicked()}) 
 addButton.addEventListener("click", addClicked)
+
+// //Listen for messages from the background script
+// browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//     if (message.id === "AddPage") {
+//         initialise_add_page();
+//     }
+// })
+
+browser.runtime.sendMessage("get_autofill").then((response) => {
+    if (response !== false){
+        addClicked().then(() => {
+            console.log(response)
+            if (response.task !== null){
+                newTaskName.value = response.task
+                addButton.disabled = newTaskName.value === ""
+            }
+            if (response.description !== null){
+                newTaskDescription.value = response.description
+            }
+            if (response.description !== null){
+                newTaskDate.value = response.dueDate
+            }
+        })
+        
+    }}
+)
+

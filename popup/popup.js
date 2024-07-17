@@ -179,6 +179,7 @@ headerText.addEventListener('click', () => {
 function initialise_list(){
     popupState = state.TaskList
     headerText.innerHTML = "Just Do"
+    headerText.disabled = false
     addButton.innerHTML = "+"
     taskList.classList.replace("w3-hide", "w3-show")
     addForm.classList.replace("w3-show", "w3-hide")
@@ -214,6 +215,7 @@ function initialise_add_page(){
     addButton.innerHTML = "Submit"
 
     addButton.disabled = true
+    headerText.disabled = true
 
     newTaskName.value = ''
     newTaskDate.value = ''
@@ -229,6 +231,7 @@ function initialise_add_page(){
 function initialise_edit_page(task){
     popupState = state.EditPage
     headerText.innerHTML = "Edit Task"
+    headerText.disabled = true
     addButton.innerHTML = "Save"
 
     newTaskName.value = task.name

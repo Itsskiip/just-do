@@ -102,14 +102,17 @@ function resettags() {
 
 function addTag() {
     const inputtag = document.getElementById("add-tag-tb")
+    console.log(inputtag.value)
     if (inputtag.value.trim() === "") {
         alert("It is empty")
         return
     }
-    saveItem("Tags", inputtag.value.trim(), inputtag.value.trim()).then(() => {
-        inputtag.value = ''
+    saveItem("Tags", inputtag.value.trim(), inputtag.value.trim())
+    .then(() => {
+        inputtag.value=''
         formatTagOption()
-    })
+    })  
+    
 }
 
 function selectedTags(){
@@ -138,7 +141,7 @@ function formatTaskTag(tagListStr){
         htmlstring+=format
      
     }
-
+   
     return htmlstring
 }
 
@@ -190,6 +193,7 @@ function initialise_add_page(){
     newTaskDate.value = ''
     newTaskDescription.value = ''
     newTags.textContent = ''
+    
     addForm.classList.replace("w3-hide", "w3-show")
     taskList.classList.replace("w3-show", "w3-hide")
     sortbar.classList.replace("w3-show", "w3-hide")

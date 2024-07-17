@@ -15,6 +15,8 @@ const tagSelection = document.getElementById('tagSelect')
 const filterTags = document.getElementById("filter-tags")
 const sortTasks = document.getElementById("sort-tasks")
 
+const sortbar=document.getElementById("sort-container")
+
 const state = Object.freeze({
     TaskList: 0,
     AddPage: 1,
@@ -156,6 +158,7 @@ function initialise_list(){
     addButton.innerHTML = "+"
     taskList.classList.replace("w3-hide", "w3-show")
     addForm.classList.replace("w3-show", "w3-hide")
+    sortbar.classList.replace("w3-hide", "w3-show")
     addButton.disabled = false
     taskList.innerHTML = ''
 
@@ -189,6 +192,7 @@ function initialise_add_page(){
     newTags.textContent = ''
     addForm.classList.replace("w3-hide", "w3-show")
     taskList.classList.replace("w3-show", "w3-hide")
+    sortbar.classList.replace("w3-show", "w3-hide")
     newTaskName.focus()
 }
 
@@ -203,6 +207,7 @@ function initialise_edit_page(task){
     current_task = task.id
     addForm.classList.replace("w3-hide", "w3-show")
     taskList.classList.replace("w3-show", "w3-hide")
+    sortbar.classList.replace("w3-show", "w3-hide")
 }
 
 document.addEventListener("DOMContentLoaded", initialise_list)
@@ -211,12 +216,14 @@ newTaskName.addEventListener("input", () => {
 })
 
 async function addClicked(){
+    
     let id
     switch (pageState) {
         case state.TaskList:
             initialise_add_page()
             formatTagOption()
             selectedTags()
+            
             return
         case state.AddPage:
             id = await getLastId("tasks")

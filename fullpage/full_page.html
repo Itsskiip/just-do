@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-grey.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script type="application/javascript" src="../node_modules/webextension-polyfill/dist/browser-polyfill.min.js"></script>
+    <script type="module" src="full_page.js"></script>
+    <style>
+        body {
+            background-color: #333;
+            color: #fff;
+        }
+        .task-container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .task-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .task-item label {
+            display: block;
+        }
+        .task-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        header h3 {
+            color: #fff;
+        }
+        .due-date {
+            display: flex;
+            align-items: center;
+        }
+        .due-date i {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header class="w3-container w3-theme w3-card w3-padding-16">
+        <h3 class="w3-left">Just Do</h3>
+        <button class="w3-button w3-right" id="add-button">+</button>
+    </header>
+
+    <div class="w3-container w3-padding-16">
+    <label for="filter-tags">Filter by Tags:</label>
+    <select id="filter-tags" class="w3-select w3-round w3-theme-d3 w3-border-0">
+        <option value="all">All tags</option>
+    </select>
+    <label for="sort-tasks">Sort by:</label>
+    <select id="sort-tasks" class="w3-select w3-round w3-theme-d3 w3-border-0">
+        <option value="recent">Most recently added</option>
+        <option value="due-date">Due date</option>
+    </select>
+    </div>
+    
+    <div class="task-container w3-padding-16">
+        <ul id="task-list" class="w3-ul w3-show"></ul>
+        <div id="add-form" class="w3-padding-16 w3-hide">
+            <div class="w3-margin-bottom">
+                <label>Task Name</label>
+                <input id="new-task-name" class="w3-input w3-round w3-theme-d3 w3-border-0" type="text">
+            </div>
+            <div class="w3-margin-bottom">
+                <label>Description</label>
+                <input id="new-task-description" class="w3-input w3-round w3-theme-d3 w3-border-0" type="text">
+            </div>
+            <div class="w3-margin-bottom">
+                <label>Due Date</label>
+                <input id="new-task-date" class="w3-input w3-round w3-theme-d3 w3-border-0" type="date">
+            </div>
+            <div class="w3-margin-bottom">
+                <label>Tags</label>
+                <div class="w3-container w3-cell" style="width: 80%; padding: 5px;">
+                    <input class="w3-input w3-round w3-theme-d3 w3-border-0" type="text" placeholder="New Tags" id="add-tag-tb">
+                </div>
+                <div class="w3-container w3-cell" style="width: 15%;padding: 5px;">
+                    <button id="add-tag-btn" type="button" class="w3-btn w3-round w3-theme-d3 w3-border-0">Add Tag</button>
+                </div>
+                <div class="w3-container w3-cell" style="width: 5%;padding: 5px;">
+                    <button id="reset-tags" type="button" class="w3-btn w3-round w3-theme-d3 w3-border-0">X</button>
+                </div>
+                <div class="w3-container">
+                    <select class="w3-input w3-round w3-theme-d3 w3-border-0" id="tagSelect" multiple></select>
+                </div>
+                <label>Selected Tags:</label>
+                <textarea id="taglist" class="w3-hide"></textarea>
+                <div class="w3-container" id="selectedtags"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

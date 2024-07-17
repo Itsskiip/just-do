@@ -1,0 +1,128 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+  
+  header h1 {
+    font-size: 32px;
+    margin: 0;
+  }
+  
+  header input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+  }
+  
+  .controls button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .controls button:hover {
+    background-color: #0056b3;
+  }
+  
+  .task-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .task-list li {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+  
+  .task-list li input[type="checkbox"] {
+    margin-top: 5px;
+  }
+  
+  .task-list li div {
+    margin-left: 15px;
+  }
+  
+  .task-list li div strong {
+    font-size: 18px;
+    display: block;
+  }
+  
+  .task-list li div p {
+    margin: 5px 0;
+    font-size: 16px;
+  }
+  
+  .due-date,
+  .tags {
+    display: block;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 2px solid #e0e0e0;
+    margin-top: 20px;
+  }
+  
+  footer input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(33% - 10px);
+  }
+  
+  footer button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  footer button:hover {
+    background-color: #218838;
+  }
+  

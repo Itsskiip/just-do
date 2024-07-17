@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Just Do - Full Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="full_page.css">
+</head>
+<body class="bg-gray-900 text-white">
+  <div class="container mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
+    <header class="flex justify-between items-center pb-6 border-b border-gray-700">
+      <h1 class="text-3xl font-bold">JUST DO</h1>
+      <input type="text" id="search" placeholder="Search" class="p-2 bg-gray-700 rounded text-white">
+    </header>
+    <div class="controls flex justify-between my-6">
+      <button id="filter" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Filter</button>
+      <button id="sort" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Sort</button>
+    </div>
+    <ul class="task-list space-y-4">
+      <!-- Task items will be dynamically added here -->
+    </ul>
+    <footer class="flex justify-between items-center pt-6 border-t border-gray-700">
+      <input type="text" id="new-task" placeholder="New Task" class="p-2 bg-gray-700 rounded text-white w-1/3">
+      <input type="date" id="new-due-date" class="p-2 bg-gray-700 rounded text-white w-1/3">
+      <input type="text" id="new-tags" placeholder="Tags" class="p-2 bg-gray-700 rounded text-white w-1/3">
+      <button id="add-task" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add Task</button>
+    </footer>
+  </div>
+  <script src="full_page.js"></script>
+</body>
+</html>

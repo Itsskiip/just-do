@@ -12,7 +12,7 @@ const state = Object.freeze({
 
 let data = {}
 let autofill = false
-let apiKey = null
+let apiKey = ""
 let highlighted_text = ''
 
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -60,6 +60,14 @@ browser.runtime.onConnect.addListener((port) => {
         });
     }
 });
+
+// not sure if need this?
+// browser.browserAction.onClicked.addListener(() => {
+//     browser.tabs.create({
+//       url: browser.runtime.getURL("full_page.html")
+//     });
+//   });
+  
 
 //create context menu
 browser.contextMenus.create({

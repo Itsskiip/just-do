@@ -169,7 +169,7 @@ function formatTaskTag(tagListStr){
 
 headerText.addEventListener('click', () => {
     browser.tabs.create({
-        url: "../detailed-page/mockup.png"
+        url: "../fullpage/full_page.html"
     });
 })
 

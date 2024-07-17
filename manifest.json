@@ -22,5 +22,11 @@
                 "default": "Ctrl+Q"
             }
         }
+    },
+    "web_accessible_resources": [
+    {
+      "resources": ["full_page.html"],
+      "matches": ["<all_urls>"]
     }
+  ]
 }

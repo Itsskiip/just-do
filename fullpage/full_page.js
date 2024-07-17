@@ -48,12 +48,13 @@ function formatTask(task){
 
     const label = document.createElement("label")
     label.innerHTML = `
-        <span style="display:inline-block; width:150px; float:left; text-align:left; text-overflow: ellipsis;overflow: hidden; vertical-align:bottom">${task.name}</span>
-        ${task.dueDate ? `<span class="due-date"><i class="fa fa-calendar"></i> Due Date: ${task.dueDate}</span>` : ''}
-        ${task.description ? `<br><span style="display:inline-block; width:250px; color:grey;font-size:small;text-overflow: ellipsis;overflow: hidden; vertical-align:top; float:left; text-align:left"> ${task.description}</span>` : ''}
+        <span style="display:inline-block;  width:70%; float:left; text-align:left; text-overflow: ellipsis;overflow: hidden; vertical-align:bottom">${task.name}</span>
+        ${task.dueDate ? `<span class="due-date" style="display: flex; align-items: center; justify-content: flex-end;"><i class="fa fa-calendar"></i> Due Date: ${task.dueDate}</span>` : ''}
+        ${task.description ? `<span style="display:inline-block; width:90%; color:gray;font-size:small;text-overflow: ellipsis;overflow: hidden; float:left; text-align:left"> ${task.description}</span>` : ''}
         ${task.tags ? `<br>${formatTaskTag(task.tags)}` : ''}
     `
     label.classList.add("w3-btn")
+    label.style = "text-align:left"
     label.addEventListener("click", () => initialise_edit_page(task))
     taskCard.appendChild(label)
 
@@ -127,7 +128,16 @@ function selectedTags(){
 }
 
 function formatTaskTag(tagListStr){
-    return tagListStr.split(',').map(tag => `<span class="w3-tag w3-light-gray w3-margin-small w3-left">${tag.trim()}</span>`).join('')
+    let list = tagListStr.split(',')
+    let htmlstring=''
+    
+    for (let item of list){
+        let format='<span class="w3-tag w3-light-gray" style="display: inline-block; margin-right: 5px;">' + item.trim() + '</span>'
+        htmlstring+=format
+     
+    }
+
+    return htmlstring
 }
 
 addTagButton.addEventListener("click", addTag)

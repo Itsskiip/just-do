@@ -37,7 +37,7 @@ class Task {
     }
 }
 
-function formatTask(task){
+export function formatTask(task){
     const taskCard = document.createElement("li")
     taskCard.classList.add("w3-display-container")
     taskCard.style = "padding:unset"

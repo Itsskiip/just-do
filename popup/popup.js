@@ -58,13 +58,14 @@ function formatTask(task){
         label.innerHTML += "</span> <span class=\"w3-opacity\"> - " + task.dueDate + "</span>"
     }
     if (task.description !== ""){
-        label.innerHTML += "<br><span style=\"display:inline-block; width:250px; color:grey;font-size:small;text-overflow: ellipsis;overflow: hidden; vertical-align:top; float:left; text-align:left\"> " + task.description + "</span>"
+        label.innerHTML += "<br><span style=\"display:inline-block; width:250px; color:gray;font-size:small;text-overflow: ellipsis;overflow: hidden; vertical-align:top; float:left; text-align:left\"> " + task.description + "</span>"
     }
     if (task.tags !== ""){
         label.innerHTML += "<br>" + formatTaskTag(task.tags)
     }
     
     label.classList.add("w3-btn")
+    label.style = "text-align:left"
     label.name = 'label'
     label.addEventListener("click", () => initialise_edit_page(task))
   
@@ -142,7 +143,9 @@ function selectedTags(){
             selectedValues.push(option.value);
 
             var showtag = document.createElement('span')
-            showtag.className = "w3-tag w3-light-gray w3-margin-small w3-left"
+            showtag.className = "w3-tag w3-light-gray"
+            showtag.style.display = "inline-block"
+            showtag.style.marginRight="5px"
             showtag.textContent = option.value
             selected.appendChild(showtag)
         }
@@ -156,9 +159,9 @@ function formatTaskTag(tagListStr){
     let htmlstring=''
     
     for (let item of list){
-        let format='<span class= "w3-tag w3-light-gray w3-margin-small w3-left">'+ item.trim() +'</span>'
+        let format='<span class="w3-tag w3-light-gray" style="display: inline-block; margin-right: 5px;">' + item.trim() + '</span>'
         htmlstring+=format
-
+     
     }
 
     return htmlstring

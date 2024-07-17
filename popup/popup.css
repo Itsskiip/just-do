@@ -2,3 +2,7 @@ body {
     width: 350px;
     height: 1000px;
 }
+
+.my-left-aligned-btn {
+    text-align: left;
+}

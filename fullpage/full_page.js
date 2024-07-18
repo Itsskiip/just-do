@@ -92,6 +92,9 @@ function formatTagOption(task=null){         //create the options for list
     
 }
 
+
+
+
 function resettags() {
     if (confirm("Delete ALL tags?")) {
         getItems("Tags", (obj) => {
@@ -190,6 +193,7 @@ function initialise_list(){
         })
         formatTagOption()
         filterTasks()
+        populateFilterTags();
     })
 }
 
@@ -252,22 +256,56 @@ async function addClicked(){
     initialise_list()
 }
 
+
+
+// Function to populate filter-tags with unique tags from tasks
+function populateFilterTags() {
+    console.log("pop accessed")
+
+    const tasks = document.querySelectorAll(".task-item");
+    const tagsSet = new Set();
+
+    // Loop through each task item
+    tasks.forEach(task => {
+        const taskTags = task.querySelectorAll('span.w3-tag.w3-light-gray');
+
+        // Iterate through tags in the current task
+        taskTags.forEach(tag => {
+            tagsSet.add(tag.textContent.trim()); // Add each tag to the set
+        });
+    });
+
+    // Get the select element
+    const filterTagsSelect = document.getElementById("filter-tags");
+
+    // Clear existing options except the first one
+    filterTagsSelect.innerHTML = '<option value="all">All tags</option>';
+
+    // Create and append options for each unique tag
+    tagsSet.forEach(tag => {
+        const option = document.createElement("option");
+        option.value = tag.toLowerCase(); // Use lowercase value for consistency
+        option.textContent = tag;
+        filterTagsSelect.appendChild(option);
+    });
+}
+
+// Example usage: Call this function whenever you need to update filter-tags
+
+
+
 function filterTasks() {
     const selectedFilter = filterTags.value
     const tasks = document.querySelectorAll(".task-item")
     tasks.forEach(task => {
-        const taskTags = task.querySelector("label").innerHTML.match(/<span class="w3-tag.*?>(.*?)<\/span>/g)
-        if (selectedFilter === "all") {
-            task.style.display = "block"
+        const taskTags = task.querySelectorAll('span.w3-tag.w3-light-gray'); // Select all <span> tags with the specified classes
+        const tags = Array.from(taskTags).map(span => span.textContent.trim()); // Extract and trim text content from each <span> tag
+        if (selectedFilter === "all" || tags.includes(selectedFilter)) {
+            task.style.display = "block";
         } else {
-            const tags = taskTags ? taskTags.map(tag => tag.replace(/<.*?>/g, '').trim()) : []
-            if (tags.includes(selectedFilter)) {
-                task.style.display = "block"
-            } else {
-                task.style.display = "none"
-            }
+            task.style.display = "none";
         }
-    })
+    });
 }
 
 document.addEventListener("keypress", (e) => {

@@ -163,6 +163,7 @@ function selectedTags(){
             showtag.className = "w3-tag w3-light-gray"
             showtag.style.display = "inline-block"
             showtag.style.marginRight="5px"
+            showtag.style.marginBottom="3px"
             showtag.textContent = option.value
             selected.appendChild(showtag)
         }
@@ -173,15 +174,15 @@ function selectedTags(){
 
 function formatTaskTag(tagListStr){
     let list = tagListStr.split(',')
-    let htmlstring=''
+    let htmlstring='<div style="display:flex; flex-wrap:wrap">'
     
     for (let item of list){
-        let format='<span class="w3-tag w3-light-gray" style="display: inline-block; margin-right: 5px;">' + item.trim() + '</span>'
+        let format='<span class="w3-tag w3-light-gray" style="display: inline-block; margin-right: 5px; margin-bottom: 3px;">' + item.trim() + '</span>'
         htmlstring+=format
      
     }
 
-    return htmlstring
+    return htmlstring+='</div>'
 }
 
 

@@ -63,27 +63,33 @@ function formatTask(task){
     return taskCard
 }
 
-function formatTagOption(){
-    tagSelection.innerHTML = ''
+function formatTagOption(task=null){         //create the options for list
     filterTags.innerHTML = '<option value="all">All tags</option>'
+    var selected = task?.tags ? task.tags.split(',') : [];
+    console.log(selected)
+    tagSelection.innerHTML=''
     
-    // Get unique tags from tasks
-    getItems("tasks", (tasks) => {
-        const tags = new Set()
-        Object.values(tasks).forEach(task => {
-            if (task.tags) {
-                task.tags.split(',').forEach(tag => tags.add(tag.trim()))
+    getItems("Tags", (results) => {
+        var tag_list = Object.keys(results);
+    
+        tag_list.forEach(tag => {
+            if (!selected.includes(tag)) {
+                var tagOption = document.createElement('option');
+                tagOption.value = tag;
+                tagOption.textContent = tag;
+                tagSelection.appendChild(tagOption);
             }
-        })
-        
-        tags.forEach(tag => {
-            const tagOption = document.createElement('option')
-            tagOption.value = tag
-            tagOption.textContent = tag
-            tagSelection.appendChild(tagOption)
-            filterTags.appendChild(tagOption.cloneNode(true))
-        })
+        });
     })
+
+    selected.forEach(tag =>{
+    var tagOption = document.createElement('option');
+        tagOption.value = tag;
+        tagOption.textContent = tag;
+        tagOption.selected=true
+        tagSelection.appendChild(tagOption);
+    })
+    
 }
 
 function resettags() {
@@ -124,7 +130,10 @@ function selectedTags(){
         if (option.selected) {
             selectedValues.push(option.value)
             const showtag = document.createElement('span')
-            showtag.className = "w3-tag w3-light-gray w3-margin-small w3-left"
+            showtag.className = "w3-tag w3-light-gray"
+            showtag.style.display = "inline-block"
+            showtag.style.marginRight="5px"
+            showtag.style.marginBottom="3px"
             showtag.textContent = option.value
             selected.appendChild(showtag)
         }
@@ -134,15 +143,15 @@ function selectedTags(){
 
 function formatTaskTag(tagListStr){
     let list = tagListStr.split(',')
-    let htmlstring=''
+    let htmlstring='<div style="display:flex; flex-wrap:wrap">'
     
     for (let item of list){
-        let format='<span class="w3-tag w3-light-gray" style="display: inline-block; margin-right: 5px;">' + item.trim() + '</span>'
+        let format='<span class="w3-tag w3-light-gray" style="display: inline-block; margin-right: 5px; margin-bottom: 3px;">' + item.trim() + '</span>'
         htmlstring+=format
      
     }
-   
-    return htmlstring
+
+    return htmlstring+='</div>'
 }
 
 addTagButton.addEventListener("click", addTag)
@@ -212,6 +221,8 @@ function initialise_edit_page(task){
     addForm.classList.replace("w3-hide", "w3-show")
     taskList.classList.replace("w3-show", "w3-hide")
     sortbar.classList.replace("w3-show", "w3-hide")
+    formatTagOption(task)
+    selectedTags() 
 }
 
 document.addEventListener("DOMContentLoaded", initialise_list)

@@ -1,3 +1,4 @@
+
 import {saveItem, getItems, getLastId} from "../scripts/storage.js"
 
 const headerText = document.getElementById("header-text")
@@ -79,21 +80,37 @@ addTagButton.addEventListener("click", addTag)
 resetTagButton.addEventListener("click",resettags)
 tagSelection.addEventListener('change',selectedTags)
 
-function formatTagOption(){         //create the options for list
+function formatTagOption(task=null){         //create the options for list
     
+    var selected = task?.tags ? task.tags.split(',') : [];
+    console.log(selected)
     tagSelection.innerHTML=''
     
     getItems("Tags", (results) => {
-        var tag_list=Object.keys(results)
-
+        var tag_list = Object.keys(results);
+    
         tag_list.forEach(tag => {
-            var tagOption = document.createElement('option');
-            tagOption.value = tag;
-            tagOption.textContent = tag;
-            tagSelection.appendChild(tagOption);
+            if (!selected.includes(tag)) {
+                var tagOption = document.createElement('option');
+                tagOption.value = tag;
+                tagOption.textContent = tag;
+                tagSelection.appendChild(tagOption);
+            }
         });
     })
+
+    selected.forEach(tag =>{
+    var tagOption = document.createElement('option');
+        tagOption.value = tag;
+        tagOption.textContent = tag;
+        tagOption.selected=true
+        tagSelection.appendChild(tagOption);
+    })
+    
 }
+   
+
+
 
 function resettags() {  //Remove all tags in selection
     let confirmationwindow=confirm("Delete ALL tags?")
@@ -226,6 +243,9 @@ function initialise_add_page(){
     taskList.classList.replace("w3-show", "w3-hide")
     
     newTaskName.focus()
+    formatTagOption()
+    selectedTags()   
+            
 }
 
 function initialise_edit_page(task){
@@ -243,6 +263,9 @@ function initialise_edit_page(task){
 
     addForm.classList.replace("w3-hide", "w3-show")
     taskList.classList.replace("w3-show", "w3-hide")
+    formatTagOption(task)
+    selectedTags()  
+    
 }
 
 //When opening the popup, initialise the list
@@ -261,11 +284,10 @@ async function addClicked(){
     switch (popupState) {
         case state.TaskList:
             initialise_add_page()
-            formatTagOption()  
-            selectedTags()   
             return
         case state.AddPage:
             id = await getLastId("tasks")
+            
             break
         case state.EditPage:
             id = current_task

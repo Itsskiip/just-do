@@ -181,9 +181,16 @@ function initialise_list(){
         const keys = Object.keys(results)
         if (sortTasks.value === 'due-date') {
             keys.sort((k1, k2) => {
-                const d1 = new Date(results[k1].dueDate)
-                const d2 = new Date(results[k2].dueDate)
-                return d1 - d2
+                let d1 = new Date(results[k1].dueDate)
+                let d2 = new Date(results[k2].dueDate)
+
+                // if (isNaN(d1)) d1 = new Date()   //todays date and no due date is at top
+                // if (isNaN(d2)) d2 = new Date()
+                if (isNaN(d1)) return -1; // NaN dates should be at the top if d1-1,d21
+                if (isNaN(d2)) return 1;  // if Nan dates at bot d1 return 1, d2 return -1
+            
+
+                return d1.getTime() - d2.getTime()
             })
         } else {
             keys.sort((k1, k2) => results[k2].id - results[k1].id)
@@ -192,8 +199,8 @@ function initialise_list(){
             taskList.appendChild(formatTask(results[key]))
         })
         formatTagOption()
-        filterTasks()
         populateFilterTags();
+        filterTasks()
     })
 }
 
@@ -256,42 +263,28 @@ async function addClicked(){
     initialise_list()
 }
 
-
-
 // Function to populate filter-tags with unique tags from tasks
 function populateFilterTags() {
     console.log("pop accessed")
 
     const tasks = document.querySelectorAll(".task-item");
     const tagsSet = new Set();
-
-    // Loop through each task item
     tasks.forEach(task => {
         const taskTags = task.querySelectorAll('span.w3-tag.w3-light-gray');
-
-        // Iterate through tags in the current task
         taskTags.forEach(tag => {
-            tagsSet.add(tag.textContent.trim()); // Add each tag to the set
+            tagsSet.add(tag.textContent.trim());
         });
     });
-
-    // Get the select element
     const filterTagsSelect = document.getElementById("filter-tags");
-
-    // Clear existing options except the first one
     filterTagsSelect.innerHTML = '<option value="all">All tags</option>';
 
-    // Create and append options for each unique tag
     tagsSet.forEach(tag => {
         const option = document.createElement("option");
-        option.value = tag.toLowerCase(); // Use lowercase value for consistency
+        option.value = tag
         option.textContent = tag;
         filterTagsSelect.appendChild(option);
     });
 }
-
-// Example usage: Call this function whenever you need to update filter-tags
-
 
 
 function filterTasks() {

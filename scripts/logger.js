@@ -1,17 +1,38 @@
-const testMode = true
-const testType = "B"
+import { seedField, saveItem, getItems } from "./storage.js"
+
+const testMode = true // Toggles A/B testing and logging
+const debug = true // Set to false before deploying. Otherwise, will re-seed every reload
+const testType = "A" // A: With tags, B: Without tags
 const filename = location.href.split("/").slice(-1)[0]
 
 if (testMode){
-    if (testType === "B"){
-        if (filename === "popup.html"){
-        } else if (filename == "full_page.html") {
-            const tag_filter = document.getElementById("tag-filter")
-            console.log(tag_filter)
-            tag_filter.classList.add("w3-hide")
+    if (filename === "_generated_background_page.html") {
+        getItems("seeded", (item) => {
+            if (debug || Object.keys(item).length === 0){
+                if (testType == "B"){
+                    fetch("../seed/tasks.json").then((resp) => resp.json().then((jsn) => {
+                        for (const task of jsn){
+                            task.tags = ""
+                            console.log(task)
+                        }
+                        seedField("tasks", jsn)
+                    }))
+                } else {
+                    fetch("../seed/tasks.json").then((resp) => resp.json().then((jsn) => seedField("tasks", jsn)))
+                    fetch("../seed/tags.json").then((resp) => resp.json().then((jsn) => seedField("tags", jsn)))
+                }
+                saveItem("seeded", 0, true)
+            }
+        })
+    } else {
+        if (testType === "B"){
+            if (filename === "popup.html"){
+            } else if (filename == "full_page.html") {
+                const tag_filter = document.getElementById("tag-filter")
+                tag_filter.classList.add("w3-hide")
+            }
+            const tags_section = document.getElementById("tags-section")
+            tags_section.classList.add("w3-hide")
         }
-        const tags_section = document.getElementById("tags-section")
-        tags_section.classList.add("w3-hide")
     }
 }
-

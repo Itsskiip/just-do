@@ -15,6 +15,10 @@ export function saveItem(field, id, value){
     })
 }
 
+export function seedField(field, seedObj){
+    browser.storage.local.set({[field]: seedObj})
+}
+
 export function removeItem(field, id){
     return getItems(field, (obj) => {
         delete obj[id]

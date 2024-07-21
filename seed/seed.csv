@@ -1,0 +1,4 @@
+id,name,description,dueDate,tags
+1,"Task 1","This is a seeded task","2024-08-01","tag1,tag2"
+2,"Task 2","This is another seeded task","2024-08-01","tag1"
+3,"Task 3","This is a third seeded task","2024-08-01","tag3"

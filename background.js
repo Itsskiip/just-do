@@ -1,4 +1,5 @@
 import "./scripts/browser-polyfill.min.js"
+import "./scripts/logger.js"
 import {removeItem, saveItem, getItems} from "./scripts/storage.js"
 import {fetchOpenAI} from "./scripts/gptassistant.js"
 

@@ -87,7 +87,7 @@ function formatTagOption(task=null){         //create the options for list
     console.log(selected)
     tagSelection.innerHTML=''
     
-    getItems("Tags", (results) => {
+    getItems("tags", (results) => {
         var tag_list = Object.keys(results);
     
         tag_list.forEach(tag => {
@@ -116,14 +116,14 @@ function formatTagOption(task=null){         //create the options for list
 function resettags() {  //Remove all tags in selection
     let confirmationwindow=confirm("Delete ALL tags?")
     if (confirmationwindow){
-        getItems("Tags", (obj) => {
+        getItems("tags", (obj) => {
         
             Object.keys(obj).forEach(id => {
                 delete obj[id];
             });
     
             
-            browser.storage.local.set({ ["Tags"]: obj })
+            browser.storage.local.set({ ["tags"]: obj })
             .then(() => {
                 formatTagOption()
                 selectedTags()
@@ -141,7 +141,7 @@ function addTag() {             //append new tag
         alert("It is empty");
         return;
     }
-    saveItem("Tags", inputtag.value.trim(), inputtag.value.trim())
+    saveItem("tags", inputtag.value.trim(), inputtag.value.trim())
     .then(() => {
         inputtag.value=''
         formatTagOption()

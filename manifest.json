@@ -23,6 +23,9 @@
             }
         }
     },
+    "options_ui": {
+      "page": "options/options.html"
+    },    
     "web_accessible_resources": [
     {
       "resources": ["full_page.html"],

@@ -61,14 +61,6 @@ browser.runtime.onConnect.addListener((port) => {
     }
 });
 
-// not sure if need this?
-// browser.browserAction.onClicked.addListener(() => {
-//     browser.tabs.create({
-//       url: browser.runtime.getURL("full_page.html")
-//     });
-//   });
-  
-
 //create context menu
 browser.contextMenus.create({
     "id": "Autofill",

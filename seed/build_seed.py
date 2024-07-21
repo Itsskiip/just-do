@@ -14,7 +14,6 @@ with open(os.path.join(__file__, os.path.pardir, 'seed.csv')) as seed_file:
         for tag in task['tags'].split(','):
             if tag:
                 tags[tag] = tag
-    tags = sorted(tags)
     with open(os.path.join(__file__, os.path.pardir, 'tasks.json'), 'w') as f:
         json.dump(tasks, f)
     with open(os.path.join(__file__, os.path.pardir, 'tags.json'), 'w') as f:

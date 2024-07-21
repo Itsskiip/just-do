@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-grey.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script type="application/javascript" src="../node_modules/webextension-polyfill/dist/browser-polyfill.min.js"></script>
+    <script type="application/javascript" src="../scripts/browser-polyfill.min.js"></script>
     <script type="module" src="full_page.js"></script>
     <style>
         body {
@@ -45,15 +45,17 @@
     </header>
 
     <div id="sort-container" class="w3-container w3-padding-16 w3-show">
-    <label for="filter-tags">Filter by Tags:</label>
-    <select id="filter-tags" class="w3-select w3-round w3-theme-d3 w3-border-0 ">
-        <option value="all">All tags</option>
-    </select>
-    <label for="sort-tasks">Sort by:</label>
-    <select id="sort-tasks" class="w3-select w3-round w3-theme-d3 w3-border-0">
-        <option value="recent">Most recently added</option>
-        <option value="due-date">Due date</option>
-    </select>
+        <div id="tag-filter">
+            <label for="filter-tags">Filter by Tags:</label>
+            <select id="filter-tags" class="w3-select w3-round w3-theme-d3 w3-border-0 ">
+                <option value="all">All tags</option>
+            </select>
+        </div>
+        <label for="sort-tasks">Sort by:</label>
+        <select id="sort-tasks" class="w3-select w3-round w3-theme-d3 w3-border-0">
+            <option value="recent">Most recently added</option>
+            <option value="due-date">Due date</option>
+        </select>
     </div>
     
     <div class="task-container w3-padding-16">

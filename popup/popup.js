@@ -1,5 +1,6 @@
 
 import {saveItem, getItems, getLastId} from "../scripts/storage.js"
+import "../scripts/logger.js"
 
 const headerText = document.getElementById("header-text")
 const addButton = document.getElementById("add-button")
@@ -196,7 +197,7 @@ headerText.addEventListener('click', () => {
 
 function initialise_list(){
     popupState = state.TaskList
-    headerText.innerHTML = "Just Do"
+    headerText.innerHTML = 'Just Do<img src="../imgs/icon_settings.svg" style="vertical-align:baseline" class="w3-margin-left">'
     headerText.disabled = false
     addButton.innerHTML = "+"
     taskList.classList.replace("w3-hide", "w3-show")

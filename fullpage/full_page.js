@@ -1,4 +1,5 @@
 import {saveItem, getItems, getLastId} from "../scripts/storage.js"
+import "../scripts/logger.js"
 
 const headerText = document.querySelector("header h3")
 const addButton = document.getElementById("add-button")

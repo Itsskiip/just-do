@@ -8,7 +8,7 @@
 </head>
 <body class="w3-card w3-theme-d5" style="width:350px; height:500px">
     <header class="w3-display-container w3-container w3-theme w3-card">
-        <h3><button id="header-text" class="w3-btn" >Just Do</button> 
+        <h3><button id="header-text" class="w3-btn" >Just Do<img src="../imgs/icon_settings.svg" style="vertical-align:baseline" class="w3-margin-left"></button> 
             <button class="w3-btn w3-right" id="add-button">+</button>
         </h3>
     </header>
@@ -31,8 +31,8 @@
                 <label>Due Date</label>
                 <input id="new-task-date" class="w3-input w3-round w3-theme-d3 w3-border-0" type="date">
             </div>
-
-            <div class="w3-margin-bottom">
+            
+            <div id="tags-section" class="w3-margin-bottom">
                 <label>Tags</label>
                 
                 <div class="w3-container w3-cell " style="width: 80%; padding: 5px;">
@@ -48,22 +48,13 @@
 
                 <div class="w3-container">
                     <select class="w3-input w3-round w3-theme-d3 w3-border-0" id="tagSelect" multiple>
-                        
                     </select>
                 </div>
                 <label>Selected Tags:</label>
                 <textarea id="taglist" class="w3-hide"></textarea>
                 <div class="w3-container" id="selectedtags">
-                
-                    
-                    
-                    
-
                 </div>  
-
             </div>
-
-            
         </div>
     </form>
 </body>

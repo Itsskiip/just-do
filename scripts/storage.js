@@ -1,9 +1,12 @@
 export function getLastId(field){
-    return getItems(field, (obj) => {
-        const keys = Object.keys(obj)
-        return keys.length === 0 ? 0 : obj[keys[keys.length - 1]].id + 1
-    })
+    return new Promise((resolve) => {
+        getItems(field, (obj) => {
+            const keys = Object.keys(obj);
+            resolve(keys.length === 0 ? 0 : obj[keys[keys.length - 1]].id + 1);
+        });
+    });
 }
+
 
 export function saveItem(field, id, value){
     return getItems(field, (obj) => {

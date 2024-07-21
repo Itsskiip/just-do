@@ -1,3 +1,4 @@
+
 import {saveItem, getItems, getLastId} from "../scripts/storage.js"
 
 const headerText = document.getElementById("header-text")
@@ -37,7 +38,7 @@ class Task {
     }
 }
 
-function formatTask(task){
+export function formatTask(task){
     const taskCard = document.createElement("li")
     taskCard.classList.add("w3-display-container")
     taskCard.style = "padding:unset"
@@ -58,13 +59,14 @@ function formatTask(task){
         label.innerHTML += "</span> <span class=\"w3-opacity\"> - " + task.dueDate + "</span>"
     }
     if (task.description !== ""){
-        label.innerHTML += "<br><span style=\"display:inline-block; width:250px; color:grey;font-size:small;text-overflow: ellipsis;overflow: hidden; vertical-align:top; float:left; text-align:left\"> " + task.description + "</span>"
+        label.innerHTML += "<br><span style=\"display:inline-block; width:250px; color:gray;font-size:small;text-overflow: ellipsis;overflow: hidden; vertical-align:top; float:left; text-align:left\"> " + task.description + "</span>"
     }
     if (task.tags !== ""){
         label.innerHTML += "<br>" + formatTaskTag(task.tags)
     }
     
     label.classList.add("w3-btn")
+    label.style = "text-align:left"
     label.name = 'label'
     label.addEventListener("click", () => initialise_edit_page(task))
   
@@ -78,21 +80,37 @@ addTagButton.addEventListener("click", addTag)
 resetTagButton.addEventListener("click",resettags)
 tagSelection.addEventListener('change',selectedTags)
 
-function formatTagOption(){         //create the options for list
+function formatTagOption(task=null){         //create the options for list
     
+    var selected = task?.tags ? task.tags.split(',') : [];
+    console.log(selected)
     tagSelection.innerHTML=''
     
     getItems("Tags", (results) => {
-        var tag_list=Object.keys(results)
-
+        var tag_list = Object.keys(results);
+    
         tag_list.forEach(tag => {
-            var tagOption = document.createElement('option');
-            tagOption.value = tag;
-            tagOption.textContent = tag;
-            tagSelection.appendChild(tagOption);
+            if (!selected.includes(tag)) {
+                var tagOption = document.createElement('option');
+                tagOption.value = tag;
+                tagOption.textContent = tag;
+                tagSelection.appendChild(tagOption);
+            }
         });
     })
+
+    selected.forEach(tag =>{
+    var tagOption = document.createElement('option');
+        tagOption.value = tag;
+        tagOption.textContent = tag;
+        tagOption.selected=true
+        tagSelection.appendChild(tagOption);
+    })
+    
 }
+   
+
+
 
 function resettags() {  //Remove all tags in selection
     let confirmationwindow=confirm("Delete ALL tags?")
@@ -142,7 +160,10 @@ function selectedTags(){
             selectedValues.push(option.value);
 
             var showtag = document.createElement('span')
-            showtag.className = "w3-tag w3-light-gray w3-margin-small w3-left"
+            showtag.className = "w3-tag w3-light-gray"
+            showtag.style.display = "inline-block"
+            showtag.style.marginRight="5px"
+            showtag.style.marginBottom="3px"
             showtag.textContent = option.value
             selected.appendChild(showtag)
         }
@@ -153,15 +174,15 @@ function selectedTags(){
 
 function formatTaskTag(tagListStr){
     let list = tagListStr.split(',')
-    let htmlstring=''
+    let htmlstring='<div style="display:flex; flex-wrap:wrap">'
     
     for (let item of list){
-        let format='<span class= "w3-tag w3-light-gray w3-margin-small w3-left">'+ item.trim() +'</span>'
+        let format='<span class="w3-tag w3-light-gray" style="display: inline-block; margin-right: 5px; margin-bottom: 3px;">' + item.trim() + '</span>'
         htmlstring+=format
-
+     
     }
 
-    return htmlstring
+    return htmlstring+='</div>'
 }
 
 
@@ -169,13 +190,14 @@ function formatTaskTag(tagListStr){
 
 headerText.addEventListener('click', () => {
     browser.tabs.create({
-        url: "https://docs.google.com/presentation/d/1IzABbTYVJvelGInY3T_BUEqebqPQjhUZFMSKAL5_yc4/edit?usp=sharing"
+        url: "../fullpage/full_page.html"
     });
 })
 
 function initialise_list(){
     popupState = state.TaskList
     headerText.innerHTML = "Just Do"
+    headerText.disabled = false
     addButton.innerHTML = "+"
     taskList.classList.replace("w3-hide", "w3-show")
     addForm.classList.replace("w3-show", "w3-hide")
@@ -211,6 +233,7 @@ function initialise_add_page(){
     addButton.innerHTML = "Submit"
 
     addButton.disabled = true
+    headerText.disabled = true
 
     newTaskName.value = ''
     newTaskDate.value = ''
@@ -221,11 +244,15 @@ function initialise_add_page(){
     taskList.classList.replace("w3-show", "w3-hide")
     
     newTaskName.focus()
+    formatTagOption()
+    selectedTags()   
+            
 }
 
 function initialise_edit_page(task){
     popupState = state.EditPage
     headerText.innerHTML = "Edit Task"
+    headerText.disabled = true
     addButton.innerHTML = "Save"
 
     newTaskName.value = task.name
@@ -237,6 +264,9 @@ function initialise_edit_page(task){
 
     addForm.classList.replace("w3-hide", "w3-show")
     taskList.classList.replace("w3-show", "w3-hide")
+    formatTagOption(task)
+    selectedTags()  
+    
 }
 
 //When opening the popup, initialise the list
@@ -255,11 +285,10 @@ async function addClicked(){
     switch (popupState) {
         case state.TaskList:
             initialise_add_page()
-            formatTagOption()  
-            selectedTags()   
             return
         case state.AddPage:
             id = await getLastId("tasks")
+            
             break
         case state.EditPage:
             id = current_task

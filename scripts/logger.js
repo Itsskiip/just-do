@@ -2,8 +2,9 @@ import { seedField, saveItem, getItems, log } from "./storage.js"
 import "./browser-polyfill.min.js"
 
 export const testMode = true // Toggles A/B testing and logging
-const debug = true // Set to false before deploying. Otherwise, will re-seed every reload
+const debug = false // Set to false before deploying. Otherwise, will re-seed every reload
 const testType = "A" // A: With tags, B: Without tags
+
 const filename = location.href.split("/").slice(-1)[0]
 
 if (testMode){

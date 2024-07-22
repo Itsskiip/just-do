@@ -34,3 +34,19 @@ To install it on Chrome, follow these steps:
 4. Commit with message: ```git commit -am "commit message here"```
 5. Push your branch to github: ```git push -u origin BRANCH_NAME```
 6. Create a ```Pull Request``` on Github or just let everyone know that you have changes ready to be merged
+
+# Setup for A/B testing
+## Seeding
+1. Open ```seed/seed.csv``` in a text or spreadsheet editor
+2. Make changes to the file
+3. Run ```seed/build_seed.py```. You can do this from the CLI with ```python -m seed/build_seed.py```
+4. This will generate ```seed/tags.json``` and ```seed/tasks.json```
+5. Ensure that ```scripts/logger.js``` is set up to load the seed as described below.
+
+## Preperation for deployment
+1. In ```scripts/logger.js```, set the constants:
+   1. ```testmode``` to ```true```
+   2. ```debug``` to ```true``` to force seed loading for testing purposes. Before sending it to users, ensure it is set back to ```false```
+   3.  ```testType``` to ```A``` for tags, or ```B``` for no tags.
+
+2. Add all files into a zip folder and send it to the user.

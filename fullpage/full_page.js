@@ -1,4 +1,5 @@
 import {saveItem, getItems, getLastId} from "../scripts/storage.js"
+import "../scripts/logger.js"
 
 const headerText = document.querySelector("header h3")
 const addButton = document.getElementById("add-button")
@@ -66,7 +67,6 @@ function formatTask(task){
 function formatTagOption(task=null){         //create the options for list
     filterTags.innerHTML = '<option value="all">All tags</option>'
     var selected = task?.tags ? task.tags.split(',') : [];
-    console.log(selected)
     tagSelection.innerHTML=''
     
     getItems("Tags", (results) => {
@@ -111,7 +111,6 @@ function resettags() {
 
 function addTag() {
     const inputtag = document.getElementById("add-tag-tb")
-    console.log(inputtag.value)
     if (inputtag.value.trim() === "") {
         alert("It is empty")
         return
@@ -265,8 +264,6 @@ async function addClicked(){
 
 // Function to populate filter-tags with unique tags from tasks
 function populateFilterTags() {
-    console.log("pop accessed")
-
     const tasks = document.querySelectorAll(".task-item");
     const tagsSet = new Set();
     tasks.forEach(task => {

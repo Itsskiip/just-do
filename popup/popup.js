@@ -1,5 +1,6 @@
 
 import {saveItem, getItems, getLastId} from "../scripts/storage.js"
+import "../scripts/logger.js"
 
 const headerText = document.getElementById("header-text")
 const addButton = document.getElementById("add-button")
@@ -86,7 +87,7 @@ function formatTagOption(task=null){         //create the options for list
     console.log(selected)
     tagSelection.innerHTML=''
     
-    getItems("Tags", (results) => {
+    getItems("tags", (results) => {
         var tag_list = Object.keys(results);
     
         tag_list.forEach(tag => {
@@ -115,14 +116,14 @@ function formatTagOption(task=null){         //create the options for list
 function resettags() {  //Remove all tags in selection
     let confirmationwindow=confirm("Delete ALL tags?")
     if (confirmationwindow){
-        getItems("Tags", (obj) => {
+        getItems("tags", (obj) => {
         
             Object.keys(obj).forEach(id => {
                 delete obj[id];
             });
     
             
-            browser.storage.local.set({ ["Tags"]: obj })
+            browser.storage.local.set({ ["tags"]: obj })
             .then(() => {
                 formatTagOption()
                 selectedTags()
@@ -140,7 +141,7 @@ function addTag() {             //append new tag
         alert("It is empty");
         return;
     }
-    saveItem("Tags", inputtag.value.trim(), inputtag.value.trim())
+    saveItem("tags", inputtag.value.trim(), inputtag.value.trim())
     .then(() => {
         inputtag.value=''
         formatTagOption()
@@ -196,7 +197,7 @@ headerText.addEventListener('click', () => {
 
 function initialise_list(){
     popupState = state.TaskList
-    headerText.innerHTML = "Just Do"
+    headerText.innerHTML = 'Just Do<img src="../imgs/icon_settings.svg" style="vertical-align:baseline" class="w3-margin-left">'
     headerText.disabled = false
     addButton.innerHTML = "+"
     taskList.classList.replace("w3-hide", "w3-show")

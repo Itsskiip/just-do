@@ -1,4 +1,5 @@
 import "./scripts/browser-polyfill.min.js"
+import "./scripts/logger.js"
 import {removeItem, saveItem, getItems} from "./scripts/storage.js"
 import {fetchOpenAI} from "./scripts/gptassistant.js"
 
@@ -59,14 +60,6 @@ browser.runtime.onConnect.addListener((port) => {
         });
     }
 });
-
-// not sure if need this?
-// browser.browserAction.onClicked.addListener(() => {
-//     browser.tabs.create({
-//       url: browser.runtime.getURL("full_page.html")
-//     });
-//   });
-  
 
 //create context menu
 browser.contextMenus.create({

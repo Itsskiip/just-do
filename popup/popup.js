@@ -84,7 +84,6 @@ tagSelection.addEventListener('change',selectedTags)
 function formatTagOption(task=null){         //create the options for list
     
     var selected = task?.tags ? task.tags.split(',') : [];
-    console.log(selected)
     tagSelection.innerHTML=''
     
     getItems("tags", (results) => {
@@ -302,8 +301,7 @@ async function addClicked(){
         newTaskDescription.value,
         newTaskDate.value,
         newTags.textContent)
-
-    console.log(task)
+        
     await saveItem("tasks", id, task)
     initialise_list()
 }
@@ -322,7 +320,6 @@ addButton.addEventListener("click", addClicked)
 browser.runtime.sendMessage("get_autofill").then((response) => {
     if (response !== false){
         addClicked().then(() => {
-            console.log(response)
             if (response.task !== null){
                 newTaskName.value = response.task
                 addButton.disabled = newTaskName.value === ""
